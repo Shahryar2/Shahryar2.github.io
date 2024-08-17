@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-Django(3)" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/06/06/Django(3)/" class="article-date">
+  <time class="dt-published" datetime="2024-06-06T02:54:49.000Z" itemprop="datePublished">2024-06-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/06/06/Django(3)/">Django3</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="Django-models中关于blank与null的补充说明"><a href="#Django-models中关于blank与null的补充说明" class="headerlink" title="Django models中关于blank与null的补充说明"></a>Django models中关于blank与null的补充说明</h3><ul>
+<li>null 是针对数据库而言，如果 null&#x3D;True, 表示数据库的该字段可以为空。</li>
+<li>blank 是针对表单的，如果 blank&#x3D;True，表示你的表单填写该字段的时候可以不填，比如 admin 界面下增加 model 一条记录的时候。直观的看到就是该字段不是粗体。</li>
+</ul>
+<h4 id="静态文件"><a href="#静态文件" class="headerlink" title="静态文件"></a>静态文件</h4><ul>
+<li>static称为静态文件夹，是不变的，形成网站的核心部件。可为Templates模块提供提供支持</li>
+<li>media称为媒体文件夹，是变动的，由用户定义的文件。可为富文本编辑器mdeditor提供支持</li>
+</ul>
+<h4 id="配置static目录"><a href="#配置static目录" class="headerlink" title="配置static目录"></a>配置static目录</h4><p>静态文件处理一般分为debug模式和非debug模式</p>
+<ul>
+<li><p>debug模式下允许访问静态资源，无需STATIC_ROOT</p>
+</li>
+<li><p>非debug模式即为生产模式。</p>
+<ul>
+<li><p>STATIC_URL：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">STATIC_URL = &#x27;/static/&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>通过url访问static文件的路径，让浏览器可以直接访问静态文件</p>
+</li>
+<li><p>STATIC_ROOT：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># BASE_DIR 是项目的绝对地址</span><br><span class="line">STATIC_ROOT = os.path.join(BASE_DIR, &#x27;xxxxxx&#x27;)</span><br></pre></td></tr></table></figure>
+
+<p>在服务器上储存static文件的路径。（部署时，将App下所有static文件复制至该文件夹下）</p>
+</li>
+<li><p>STATICFILES_DIRS：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">STATICFILES_DIRS = (</span><br><span class="line">    os.path.join(BASE_DIR, &#x27;common_static&#x27;),</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>开发模式时，先到该文件夹查找静态文件，其次到各个APP的static文件夹查找</p>
+<p>（同时，查找为惰性查找，查找到第一个，就停止查找）</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="配置media目录"><a href="#配置media目录" class="headerlink" title="配置media目录"></a>配置media目录</h4><ul>
+<li>MEDIA_ROOT：设置用户上传文件的实际保存目录，该文件夹自动创建</li>
+<li>MEDIA_URL： 代表用户通过URL来访问这个本地地址的URL</li>
+</ul>
+<h4 id="信号机制"><a href="#信号机制" class="headerlink" title="信号机制"></a>信号机制</h4><p>​	允许若干个发送者通知一组接收者某些特定操作或事件已经发生，	接收者收到信号后去执行特定的操作。</p>
+<ul>
+<li>post_save：可用于创建关联对象，发送通知等</li>
+</ul>
+<h4 id="周总结"><a href="#周总结" class="headerlink" title="周总结"></a>周总结</h4><ul>
+<li>计划完善论坛功能</li>
+<li>完善的同时明晰知识点</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/06/06/Django(3)/" data-id="clzxsbpb40000jgtr69zdhl3y" data-title="Django3" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Django(2)" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/05/25/Django(2)/" class="article-date">
+  <time class="dt-published" datetime="2024-05-25T12:16:42.135Z" itemprop="datePublished">2024-05-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="一-HttpResponse"><a href="#一-HttpResponse" class="headerlink" title="一. HttpResponse"></a>一. HttpResponse</h2><ul>
+<li><h4 id="作用："><a href="#作用：" class="headerlink" title="作用："></a>作用：</h4></li>
+</ul>
+<ol>
+<li><p>传递字符串</p>
+<p>字符串作为页面内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">from django.http import HttpResponse</span><br><span class="line">response = HttpResponse(&quot;Here&#x27;s the text of the Web page.&quot;)</span><br><span class="line">response = HttpResponse(&quot;Text only,please.&quot;,content_type=&quot;text/plain&quot;)</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>传递可迭代对象</p>
+</li>
+<li><p>设置头部字段</p>
+</li>
+<li><p>告诉浏览器将响应视为文件附件</p>
+</li>
+</ol>
+<h2 id="二-Django"><a href="#二-Django" class="headerlink" title="二. Django"></a>二. Django</h2><p><img src="C:\Users\86138\Pictures\dfd85fd0-790b-46ed-8cb7-ca041f6e42b1.png"></p>
+<ul>
+<li><h4 id="项目目录结构"><a href="#项目目录结构" class="headerlink" title="项目目录结构"></a>项目目录结构</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ django-admin startproject mywebsite1</span><br><span class="line">$ tree mywebsite1/</span><br><span class="line">mywebsite1/</span><br><span class="line">├── manage.py #项目管理主程序，管理整个项目的开发运行的调试</span><br><span class="line">└── mywebsite1</span><br><span class="line">    ├── __init__.py #初始化文件，服务运行启动时自动运行</span><br><span class="line">    ├── settings.py #为Django框架运行传递参数</span><br><span class="line">    ├── urls.py #基础路由配置文件</span><br><span class="line">    └── wsgi.py #web服务网关接口配置文件</span><br><span class="line"></span><br><span class="line">1 directory, 5 files</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><h4 id="结构组成"><a href="#结构组成" class="headerlink" title="结构组成"></a>结构组成</h4></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">1. `migrations` 文件夹</span><br><span class="line">    - 保存数据迁移的中间文件</span><br><span class="line">2. `__init__.py`</span><br><span class="line">    - 应用子包的初始化文件</span><br><span class="line">3. `admin.py`</span><br><span class="line">    - 应用的后台管理配置文件</span><br><span class="line">4. `apps.py`</span><br><span class="line">    - 应用的属性配置文件</span><br><span class="line">5. `models.py`</span><br><span class="line">    - 与数据库相关的模型映射类文件</span><br><span class="line">6. `tests.py`</span><br><span class="line">    - 应用的单元测试文件</span><br><span class="line">7. `views.py`</span><br><span class="line">    - 定义视图处理函数的文件</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>cookie和session</p>
+<ul>
+<li><p>cookie是用于储存服务器返回给客户端的信息的一些数据（可实现自动登录，保存浏览历史，身份验证等），储存量较小，更不安全</p>
+</li>
+<li><p>和cookie类似，但是特殊对象，每个浏览器独享。需要cookie配合，储存量较大，更安全</p>
+</li>
+</ul>
+</li>
+<li><h4 id="Django-shortctus"><a href="#Django-shortctus" class="headerlink" title="Django shortctus"></a>Django shortctus</h4><p>提供快捷函数的模块，帮助我们更方便的编写试图函数</p>
+</li>
+<li><h4 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h4><p>是互联网上用来标识某一处资源的地址，是用户访问资源的关键，它定义了资源的位置和访问方式。</p>
+</li>
+<li><h4 id="重定向"><a href="#重定向" class="headerlink" title="重定向"></a>重定向</h4><ul>
+<li><p>redirect</p>
+</li>
+<li><p>作为一种HTTP响应，告诉客户端在完成当前请求后，应使用另一个URL来发起新的请求。</p>
+</li>
+</ul>
+</li>
+<li><h4 id="主键（pk）"><a href="#主键（pk）" class="headerlink" title="主键（pk）"></a>主键（pk）</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">def Post_detail(request, pk):</span><br><span class="line">    post = get_object_or_404(Post, pk=pk)</span><br><span class="line">    return render(request, &#x27;学术交流/post_detail.html&#x27;, &#123;&#x27;post&#x27;: post&#125;)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>​		以上代码中，pk作为一个参数，被用作一个变量名，代表指定用户想要访问的特定帖子的唯一标识符。</p>
+<ul>
+<li><h4 id="HTML"><a href="#HTML" class="headerlink" title="HTML"></a>HTML</h4><ul>
+<li><p>[<a target="_blank" rel="noopener" href="https://www.runoob.com/html/html-intro.html]">https://www.runoob.com/html/html-intro.html]</a>: </p>
+</li>
+<li><h4 id="form表单"><a href="#form表单" class="headerlink" title="form表单"></a>form表单</h4><ul>
+<li>功能：用于搜集不同类型的用户输入的内容</li>
+</ul>
+</li>
+<li><h4 id="模型表单ModelForm"><a href="#模型表单ModelForm" class="headerlink" title="模型表单ModelForm"></a>模型表单ModelForm</h4><ul>
+<li>一种自动生成表单工具，以模型为基础，在模型类上定义的表单。通过指定模型类作为表单数据的基础，自动生成表单。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><h4 id="render（）函数"><a href="#render（）函数" class="headerlink" title="render（）函数"></a>render（）函数</h4><ul>
+<li>将数据渲染到指定模板后，将渲染好的页面返回给浏览器。</li>
+</ul>
+</li>
+<li><h4 id="models常用的数据类型"><a href="#models常用的数据类型" class="headerlink" title="models常用的数据类型"></a>models常用的数据类型</h4><p>[<a target="_blank" rel="noopener" href="https://www.cnblogs.com/yjq520/p/9003996.html]">https://www.cnblogs.com/yjq520/p/9003996.html]</a>: </p>
+</li>
+<li><h4 id="authenticate函数"><a href="#authenticate函数" class="headerlink" title="authenticate函数"></a>authenticate函数</h4><ul>
+<li>低级别认证函数，用于检查提供的用户名和密码是否与数据库中用户是否匹配</li>
+</ul>
+</li>
+<li><h4 id="AuthenticationForm类"><a href="#AuthenticationForm类" class="headerlink" title="AuthenticationForm类"></a>AuthenticationForm类</h4><ul>
+<li>是表单类，继承自django.forms.Form。</li>
+<li>提供了一个用户界面，用户可以输入用户名和密码。</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/05/25/Django(2)/" data-id="clzxsbpb70001jgtr340g6dxp" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-关于Django" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/05/25/%E5%85%B3%E4%BA%8EDjango/" class="article-date">
+  <time class="dt-published" datetime="2024-05-25T08:52:42.000Z" itemprop="datePublished">2024-05-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/05/25/%E5%85%B3%E4%BA%8EDjango/">关于Django</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="周总结"><a href="#周总结" class="headerlink" title="周总结"></a>周总结</h3><ol>
+<li><p>利用Pycharm+Django完成搭建了一个简单的Python Web项目</p>
+</li>
+<li><p>在做论坛的同时进行对Django简单的，初步的学习</p>
+</li>
+</ol>
+<h3 id="关于Django"><a href="#关于Django" class="headerlink" title="关于Django"></a>关于Django</h3><ol>
+<li><p>​	</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python manage.py runserver  #既启动服务器（localhost:8000）</span><br><span class="line">python manage.py startapp 论坛 #创建第一个自定义app</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>Django 路由</p>
+</li>
+</ol>
+<p>​	根据用户请求的 URL 链接来判断对应的处理程序，并返回处理结果，也就是 URL 与 Django 的视图建立映射关系。<br>​	Django路由在urls.py配置</p>
+<ol start="3">
+<li>manage.py<br>文件是项目管理的主程序，是在开发阶段用于管理整个项目开发运行的调试</li>
+</ol>
+<p>​	以上等等</p>
+<h3 id="出现问题"><a href="#出现问题" class="headerlink" title="出现问题"></a>出现问题</h3><ol>
+<li>创建过程中语句的陌生</li>
+<li>网页拒绝访问</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/05/25/%E5%85%B3%E4%BA%8EDjango/" data-id="clzxsbpb90003jgtrdm5ya4fo" data-title="关于Django" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="photo-周总结" class="h-entry article article-type-photo" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/05/17/%E5%91%A8%E6%80%BB%E7%BB%93/" class="article-date">
+  <time class="dt-published" datetime="2024-05-17T09:54:11.965Z" itemprop="datePublished">2024-05-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="title-周总结"><a href="#title-周总结" class="headerlink" title="title: 周总结"></a>title: 周总结</h2><h2 id="date-2024-05-17-17-54-11tags"><a href="#date-2024-05-17-17-54-11tags" class="headerlink" title="date: 2024-05-17 17:54:11tags:"></a>date: 2024-05-17 17:54:11<br>tags:</h2><p>###一. 完成github和hexo从0到1搭建</p>
+<h4 id="周任务"><a href="#周任务" class="headerlink" title="周任务"></a>周任务</h4><pre><code>1. 四级卷子的题目完成
+2. 力扣题目周任务
+3. 学了下Python到（子类继承父类构造函数说明）
+ 
+</code></pre>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/05/17/%E5%91%A8%E6%80%BB%E7%BB%93/" data-id="clzxsbpba0004jgtrg81z615c" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-hello-world" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/05/10/hello-world/" class="article-date">
+  <time class="dt-published" datetime="2024-05-10T07:03:49.608Z" itemprop="datePublished">2024-05-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/05/10/hello-world/">Hello World</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/05/10/hello-world/" data-id="clzxsbpb80002jgtrdt0m9ie8" data-title="Hello World" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/06/">June 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/06/06/Django(3)/">Django3</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/25/Django(2)/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/25/%E5%85%B3%E4%BA%8EDjango/">关于Django</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/17/%E5%91%A8%E6%80%BB%E7%BB%93/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/10/hello-world/">Hello World</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2024 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

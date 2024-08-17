@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Django3 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Django models中关于blank与null的补充说明 null 是针对数据库而言，如果 null&#x3D;True, 表示数据库的该字段可以为空。 blank 是针对表单的，如果 blank&#x3D;True，表示你的表单填写该字段的时候可以不填，比如 admin 界面下增加 model 一条记录的时候。直观的看到就是该字段不是粗体。  静态文件 static称为静态文件夹，是不变的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Django3">
+<meta property="og:url" content="http://example.com/2024/06/06/Django(3)/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Django models中关于blank与null的补充说明 null 是针对数据库而言，如果 null&#x3D;True, 表示数据库的该字段可以为空。 blank 是针对表单的，如果 blank&#x3D;True，表示你的表单填写该字段的时候可以不填，比如 admin 界面下增加 model 一条记录的时候。直观的看到就是该字段不是粗体。  静态文件 static称为静态文件夹，是不变的">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-06-06T02:54:49.000Z">
+<meta property="article:modified_time" content="2024-06-08T05:47:40.494Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Django(3)" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/06/06/Django(3)/" class="article-date">
+  <time class="dt-published" datetime="2024-06-06T02:54:49.000Z" itemprop="datePublished">2024-06-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Django3
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="Django-models中关于blank与null的补充说明"><a href="#Django-models中关于blank与null的补充说明" class="headerlink" title="Django models中关于blank与null的补充说明"></a>Django models中关于blank与null的补充说明</h3><ul>
+<li>null 是针对数据库而言，如果 null&#x3D;True, 表示数据库的该字段可以为空。</li>
+<li>blank 是针对表单的，如果 blank&#x3D;True，表示你的表单填写该字段的时候可以不填，比如 admin 界面下增加 model 一条记录的时候。直观的看到就是该字段不是粗体。</li>
+</ul>
+<h4 id="静态文件"><a href="#静态文件" class="headerlink" title="静态文件"></a>静态文件</h4><ul>
+<li>static称为静态文件夹，是不变的，形成网站的核心部件。可为Templates模块提供提供支持</li>
+<li>media称为媒体文件夹，是变动的，由用户定义的文件。可为富文本编辑器mdeditor提供支持</li>
+</ul>
+<h4 id="配置static目录"><a href="#配置static目录" class="headerlink" title="配置static目录"></a>配置static目录</h4><p>静态文件处理一般分为debug模式和非debug模式</p>
+<ul>
+<li><p>debug模式下允许访问静态资源，无需STATIC_ROOT</p>
+</li>
+<li><p>非debug模式即为生产模式。</p>
+<ul>
+<li><p>STATIC_URL：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">STATIC_URL = &#x27;/static/&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>通过url访问static文件的路径，让浏览器可以直接访问静态文件</p>
+</li>
+<li><p>STATIC_ROOT：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># BASE_DIR 是项目的绝对地址</span><br><span class="line">STATIC_ROOT = os.path.join(BASE_DIR, &#x27;xxxxxx&#x27;)</span><br></pre></td></tr></table></figure>
+
+<p>在服务器上储存static文件的路径。（部署时，将App下所有static文件复制至该文件夹下）</p>
+</li>
+<li><p>STATICFILES_DIRS：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">STATICFILES_DIRS = (</span><br><span class="line">    os.path.join(BASE_DIR, &#x27;common_static&#x27;),</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>开发模式时，先到该文件夹查找静态文件，其次到各个APP的static文件夹查找</p>
+<p>（同时，查找为惰性查找，查找到第一个，就停止查找）</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="配置media目录"><a href="#配置media目录" class="headerlink" title="配置media目录"></a>配置media目录</h4><ul>
+<li>MEDIA_ROOT：设置用户上传文件的实际保存目录，该文件夹自动创建</li>
+<li>MEDIA_URL： 代表用户通过URL来访问这个本地地址的URL</li>
+</ul>
+<h4 id="信号机制"><a href="#信号机制" class="headerlink" title="信号机制"></a>信号机制</h4><p>​	允许若干个发送者通知一组接收者某些特定操作或事件已经发生，	接收者收到信号后去执行特定的操作。</p>
+<ul>
+<li>post_save：可用于创建关联对象，发送通知等</li>
+</ul>
+<h4 id="周总结"><a href="#周总结" class="headerlink" title="周总结"></a>周总结</h4><ul>
+<li>计划完善论坛功能</li>
+<li>完善的同时明晰知识点</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/06/06/Django(3)/" data-id="clzxsbpb40000jgtr69zdhl3y" data-title="Django3" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2024/05/25/Django(2)/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/06/">June 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/06/06/Django(3)/">Django3</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/25/Django(2)/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/25/%E5%85%B3%E4%BA%8EDjango/">关于Django</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/17/%E5%91%A8%E6%80%BB%E7%BB%93/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/10/hello-world/">Hello World</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2024 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
