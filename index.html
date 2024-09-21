@@ -69,6 +69,124 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-设计模式-9-8" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/09/08/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-9-8/" class="article-date">
+  <time class="dt-published" datetime="2024-09-08T07:00:19.000Z" itemprop="datePublished">2024-09-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/09/08/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-9-8/">设计模式-9.8</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="代理模式"><a href="#代理模式" class="headerlink" title="代理模式"></a>代理模式</h2><ul>
+<li><p>创建一个代理类作为真实对象的中间层，在对该对象访问时进行控制。</p>
+<!--例如购买火车票的代售点作为火车站的代理-->
+</li>
+<li><p>具体步骤</p>
+<ul>
+<li><p>创建一个接口；</p>
+</li>
+<li><p>创建实现接口的实体类和代理类；</p>
+<!--代理类通过引用实体类，实现功能-->
+</li>
+<li><p>实现用户需求；</p>
+</li>
+</ul>
+</li>
+<li><h3 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h3><ul>
+<li><p><strong>与适配器模式区别</strong></p>
+<p>适配器模式改变接口</p>
+<pre><code>public class ObjectHeadSetAdapter implements IPhoneInterface &#123;
+    
+    private AndroidInterface androidInterface;
+
+    public ObjectHeadSetAdapter(AndroidInterface androidInterface) &#123;
+        this.androidInterface = androidInterface;
+&#125;
+
+    @Override
+    public void iphoneHeadSet() &#123;
+        androidInterface.androidHeadSet();
+    &#125;
+&#125;
+</code></pre>
+</li>
+</ul>
+</li>
+<li><p><strong>与装饰器模式区别</strong></p>
+<p>装饰器模式用于增强功能</p>
+</li>
+</ul>
+<h2 id="责任链模式"><a href="#责任链模式" class="headerlink" title="责任链模式"></a>责任链模式</h2><ul>
+<li><h4 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h4><p>将所有请求处理者通过前一对象记住下一个对象的引用连成一条链；</p>
+<p>客户将请求发至责任链上即可</p>
+</li>
+<li><h4 id="结构"><a href="#结构" class="headerlink" title="结构"></a><strong>结构</strong></h4><ul>
+<li><p><strong>抽象处理者</strong>：定义处理请求的接口（抽象处理方法和后继连接）；</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">//抽象处理者角色</span><br><span class="line">abstract class Handler</span><br><span class="line">&#123;</span><br><span class="line">    private Handler next;</span><br><span class="line">    public void setNext(Handler next)</span><br><span class="line">    &#123;</span><br><span class="line">        this.next=next; </span><br><span class="line">    &#125;</span><br><span class="line">    public Handler getNext()</span><br><span class="line">    &#123; </span><br><span class="line">        return next; </span><br><span class="line">    &#125;   </span><br><span class="line">    //处理请求的方法</span><br><span class="line">    public abstract void handleRequest(String request);       </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p><strong>具体处理者</strong>：实现处理者的处理方法；</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">//具体处理者角色1</span><br><span class="line">class ConcreteHandler1 extends Handler</span><br><span class="line">&#123;</span><br><span class="line">    public void handleRequest(String request)</span><br><span class="line">    &#123;</span><br><span class="line">        if(request.equals(&quot;one&quot;)) </span><br><span class="line">        &#123;</span><br><span class="line">            System.out.println(&quot;具体处理者1负责处理该请求！&quot;);       </span><br><span class="line">        &#125;</span><br><span class="line">        else</span><br><span class="line">        &#123;</span><br><span class="line">            if(getNext()!=null) </span><br><span class="line">            &#123;</span><br><span class="line">                getNext().handleRequest(request);             </span><br><span class="line">            &#125;</span><br><span class="line">            else</span><br><span class="line">            &#123;</span><br><span class="line">                System.out.println(&quot;没有人处理该请求！&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; </span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p><strong>客户类</strong>：创建处理链，向链头的具体处理者对象提交申请；</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">package chainOfResponsibility;</span><br><span class="line">public class ChainOfResponsibilityPattern</span><br><span class="line">&#123;</span><br><span class="line">    public static void main(String[] args)</span><br><span class="line">    &#123;</span><br><span class="line">        //组装责任链 </span><br><span class="line">        Handler handler1=new ConcreteHandler1(); </span><br><span class="line">        Handler handler2=new ConcreteHandler2(); </span><br><span class="line">        handler1.setNext(handler2); </span><br><span class="line">        //提交请求 </span><br><span class="line">        handler1.handleRequest(&quot;two&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h2 id="解释器模式"><a href="#解释器模式" class="headerlink" title="解释器模式"></a>解释器模式</h2><ul>
+<li><h4 id="定义-1"><a href="#定义-1" class="headerlink" title="定义"></a><strong>定义</strong></h4><p>定义一种语言的语法表示，提供一个解释器解释该语言中的语句。</p>
+<!--解析和执行特定语言或表达式-->
+</li>
+<li><h4 id="结构-1"><a href="#结构-1" class="headerlink" title="结构"></a>结构</h4><ul>
+<li><p><strong>抽象表达式</strong>：解释方法的接口（语法）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">interface Expression &#123;</span><br><span class="line">    int interpret();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>终结符表达式</strong>：表示语法中的基本元素</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class NumberExpression implements Expression &#123;</span><br><span class="line">    private int number;</span><br><span class="line"></span><br><span class="line">    public NumberExpression(int number) &#123;</span><br><span class="line">        this.number = number;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public int interpret() &#123;</span><br><span class="line">        return number;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<!--举例中指加减法，即定义数字-->
+</li>
+<li><p><strong>非终结符表达式</strong>：表示复杂的规则（将基本元素即终结符表达式组合起来）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">class AddExpression implements Expression &#123;</span><br><span class="line">    private Expression leftExpression;</span><br><span class="line">    private Expression rightExpression;</span><br><span class="line"></span><br><span class="line">    public AddExpression(Expression leftExpression, Expression rightExpression) &#123;</span><br><span class="line">        this.leftExpression = leftExpression;</span><br><span class="line">        this.rightExpression = rightExpression;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public int interpret() &#123;</span><br><span class="line">        return leftExpression.interpret() + rightExpression.interpret();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//上述为加法，减法同上</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>解释器</strong>：实现简单的表达式</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public class InterpreterPatternDemo &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        // 创建表达式：10 + (5 - 2)</span><br><span class="line">        Expression number10 = new NumberExpression(10);</span><br><span class="line">        Expression number5 = new NumberExpression(5);</span><br><span class="line">        Expression number2 = new NumberExpression(2);</span><br><span class="line"></span><br><span class="line">        // 5 - 2</span><br><span class="line">        Expression subtractExpression = new SubtractExpression(number5, number2);</span><br><span class="line"></span><br><span class="line">        // 10 + (5 - 2)</span><br><span class="line">        Expression addExpression = new AddExpression(number10, subtractExpression);</span><br><span class="line"></span><br><span class="line">        // 解释最终的表达式</span><br><span class="line">        int result = addExpression.interpret();</span><br><span class="line">        System.out.println(&quot;Result: &quot; + result);  // 输出 13</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/09/08/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-9-8/" data-id="cm1c6vf3s0000fktr5teb1e69" data-title="设计模式-9.8" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-设计模式-9-4" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2024/09/04/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-9-4/" class="article-date">
@@ -584,6 +702,10 @@ public static Singleton getInstance() &#123;
       <ul>
         
           <li>
+            <a href="/2024/09/08/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-9-8/">设计模式-9.8</a>
+          </li>
+        
+          <li>
             <a href="/2024/09/04/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-9-4/">设计模式(9.4)</a>
           </li>
         
@@ -597,10 +719,6 @@ public static Singleton getInstance() &#123;
         
           <li>
             <a href="/2024/05/25/Django(2)/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2024/05/25/%E5%85%B3%E4%BA%8EDjango/">关于Django</a>
           </li>
         
       </ul>
