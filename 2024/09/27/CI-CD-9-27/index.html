@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>关于K8s和Knative(9.27) | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="K8s 基本框架通常包含Master节点和Worker节点；  Master节点 负责整个集群的管理和控制  API服务器： 处理所有的 REST 请求，作为负载的入口；  调度器： 负责将 Pod 分配到合适的 Worker 节点； Pod:  K8s中互联的部署单元，每个共享相同的网络命名空间，可通过localhost相互通信，共享存储卷；    控制管理器： 监控集群状态，确保集群的实际状态">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于K8s和Knative(9.27)">
+<meta property="og:url" content="http://example.com/2024/09/27/CI-CD-9-27/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="K8s 基本框架通常包含Master节点和Worker节点；  Master节点 负责整个集群的管理和控制  API服务器： 处理所有的 REST 请求，作为负载的入口；  调度器： 负责将 Pod 分配到合适的 Worker 节点； Pod:  K8s中互联的部署单元，每个共享相同的网络命名空间，可通过localhost相互通信，共享存储卷；    控制管理器： 监控集群状态，确保集群的实际状态">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-09-27T12:51:11.000Z">
+<meta property="article:modified_time" content="2024-11-17T08:25:43.183Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-CI-CD-9-27" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/09/27/CI-CD-9-27/" class="article-date">
+  <time class="dt-published" datetime="2024-09-27T12:51:11.000Z" itemprop="datePublished">2024-09-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      关于K8s和Knative(9.27)
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="K8s"><a href="#K8s" class="headerlink" title="K8s"></a>K8s</h3><ul>
+<li><h4 id="基本框架"><a href="#基本框架" class="headerlink" title="基本框架"></a>基本框架</h4><p>通常包含<strong>Master节点</strong>和<strong>Worker节点</strong>；</p>
+<ul>
+<li><p><strong>Master节点</strong></p>
+<p>负责整个集群的管理和控制</p>
+<ul>
+<li><p><strong>API服务器</strong>：</p>
+<p>处理所有的 REST 请求，作为负载的入口；</p>
+</li>
+<li><p><strong>调度器</strong>：</p>
+<p>负责将 Pod 分配到合适的 Worker 节点；</p>
+<p>Pod:</p>
+<ul>
+<li>K8s中互联的部署单元，每个共享相同的网络命名空间，可通过localhost相互通信，共享存储卷；</li>
+</ul>
+<!--最小且最简单的K8s对象-->
+</li>
+<li><p><strong>控制管理器</strong>：</p>
+<p>监控集群状态，确保集群的实际状态与期望状态一致；</p>
+</li>
+<li><p><strong>etcd</strong>：</p>
+<p>一个密钥值存储，用于维护集群的状态信息；</p>
+<!--可以作为集群数据的后台数据库--></li>
+</ul>
+</li>
+<li><p><strong>Worker节点</strong></p>
+<p>实际运行应用程序的位置</p>
+<ul>
+<li><p><strong>Kubelet</strong>：</p>
+<!--节点代理器-->
+
+<p>负责与Master节点通信，确保容器在节点上运行；</p>
+<!--负责具体的容器生命周期管理，从数据库中获取信息来管理，上报pod运行状态-->
+</li>
+<li><p><strong>容器运行时</strong>：</p>
+<p>负责实际运行容器，比如Docker或containerd；</p>
+</li>
+<li><p><strong>Kube-Proxy</strong>：</p>
+<p>负责网络代理和负载均衡；</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="YAML语法"><a href="#YAML语法" class="headerlink" title="YAML语法"></a>YAML语法</h4><ul>
+<li><p>YAML允许使用个感叹号(!)强制转换数据类型；<br>单叹号通常是自定义类型，双叹号是内置类型；</p>
+</li>
+<li><h4 id="特殊类型"><a href="#特殊类型" class="headerlink" title="特殊类型"></a>特殊类型</h4></li>
+<li><p><strong>文本块</strong></p>
+<ul>
+<li><p>注意“|”与文本之间须另起一行，使用|标注的文本内容缩进表示的块，可以保留块中已有的回车换行；</p>
+<p><code>value: |  hello  world!</code></p>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="Pod"><a href="#Pod" class="headerlink" title="Pod"></a>Pod</h4><ul>
+<li><p>集群中的基本单元</p>
+<!--支持多容器在一个中共享网络地址和文件系统-->
+</li>
+<li><p>每个Pod通过Pause容器（根容器）使其在对应的容器间共享网络和存储</p>
+<ul>
+<li><p><strong>共享网络资源</strong></p>
+<ul>
+<li><p>每个Pod被分配唯一的IP地址。所有容器共享网络空间（IP地址和端口）；</p>
+</li>
+<li><p>与外界通信，分配共享网络资源（使用宿主机的端口映射）</p>
+</li>
+</ul>
+</li>
+<li><p><strong>共享存储资源</strong></p>
+</li>
+<li><p><strong>veth-pair</strong></p>
+<!--[Linux 虚拟网络设备 veth-pair 详解，看这一篇就够了 - bakari - 博客园 (cnblogs.com)](https://www.cnblogs.com/bakari/p/10613710.html#:~:text=前面这篇文章介绍)-->
+
+<p>虚拟网路接口，一端连接协议栈，一端彼此相连；</p>
+<p>三个经典实验，直接相连、通过 Bridge 相连和通过 OVS 相连；</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="相关命令"><a href="#相关命令" class="headerlink" title="相关命令"></a>相关命令</h4><ul>
+<li><p>podman pull </p>
+<!--镜像拉取，+镜像名称+拉取地址-->
+</li>
+<li><p>podman tag</p>
+<!--镜像标记（添加标签）--></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/09/27/CI-CD-9-27/" data-id="cm4tybpn90001ewf55uf71hzn" data-title="关于K8s和Knative(9.27)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2024/11/06/2024-11-6/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          2024-11-6
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2024/09/08/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-9-8/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">设计模式-9.8</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/12/">December 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/11/">November 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/09/">September 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/08/">August 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/06/">June 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/12/02/%E6%B5%8B%E8%AF%95/">测试</a>
+          </li>
+        
+          <li>
+            <a href="/2024/11/17/%E5%85%B3%E4%BA%8E%E9%83%A8%E7%BD%B2%E5%B9%B3%E5%8F%B0%E6%97%B6%E7%9A%84%E9%97%AE%E9%A2%98/">关于部署平台时的问题</a>
+          </li>
+        
+          <li>
+            <a href="/2024/11/14/%E5%85%B3%E4%BA%8EK8s%E5%92%8CKnative/">关于K8s和Knative</a>
+          </li>
+        
+          <li>
+            <a href="/2024/11/13/%E6%97%A0%E6%9C%8D%E5%8A%A1%E7%99%BD%E7%9A%AE%E4%B9%A6-11-13/">无服务白皮书(11.13)</a>
+          </li>
+        
+          <li>
+            <a href="/2024/11/06/2024-11-6/">2024-11-6</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2024 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

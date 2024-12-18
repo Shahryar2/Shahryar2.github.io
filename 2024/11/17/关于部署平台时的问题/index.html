@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>关于部署平台时的问题 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="平台Knative 首先Knative建立在K8s集群上； 部署K8s用到的工具： docker(podman) debian Kubectl Minikube     Kubectl   需要先安装Snap包 用Snap包创建符号链接 添加至配置文件   Minikube   在启动Minikube时，要求podman 最低版本为4.9.0  更新podman出现了一系列问题导致无法直接更新，从">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于部署平台时的问题">
+<meta property="og:url" content="http://example.com/2024/11/17/%E5%85%B3%E4%BA%8E%E9%83%A8%E7%BD%B2%E5%B9%B3%E5%8F%B0%E6%97%B6%E7%9A%84%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="平台Knative 首先Knative建立在K8s集群上； 部署K8s用到的工具： docker(podman) debian Kubectl Minikube     Kubectl   需要先安装Snap包 用Snap包创建符号链接 添加至配置文件   Minikube   在启动Minikube时，要求podman 最低版本为4.9.0  更新podman出现了一系列问题导致无法直接更新，从">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-11-17T08:27:49.000Z">
+<meta property="article:modified_time" content="2024-12-02T13:53:27.337Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-关于部署平台时的问题" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/11/17/%E5%85%B3%E4%BA%8E%E9%83%A8%E7%BD%B2%E5%B9%B3%E5%8F%B0%E6%97%B6%E7%9A%84%E9%97%AE%E9%A2%98/" class="article-date">
+  <time class="dt-published" datetime="2024-11-17T08:27:49.000Z" itemprop="datePublished">2024-11-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      关于部署平台时的问题
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h4 id="平台Knative"><a href="#平台Knative" class="headerlink" title="平台Knative"></a>平台Knative</h4><ul>
+<li>首先Knative建立在K8s集群上；</li>
+<li>部署K8s用到的工具：<ul>
+<li>docker(podman)</li>
+<li>debian</li>
+<li>Kubectl</li>
+<li>Minikube</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4 id="Kubectl"><a href="#Kubectl" class="headerlink" title="Kubectl"></a>Kubectl</h4><!--详情见[如何在 Debian 11 上使用 Minicube 设置 Kubernetes 集群 (linux-console.net)](https://cn.linux-console.net/?p=4101)-->
+
+<ul>
+<li>需要先安装Snap包</li>
+<li>用Snap包创建符号链接</li>
+<li>添加至配置文件</li>
+</ul>
+<hr>
+<h4 id="Minikube"><a href="#Minikube" class="headerlink" title="Minikube"></a>Minikube</h4><!--同上-->
+
+<ul>
+<li><p>在启动Minikube时，要求podman 最低版本为4.9.0</p>
+<ul>
+<li><p>更新podman出现了一系列问题导致无法直接更新，从主机github上下载4.9.0的压缩包；</p>
+</li>
+<li><p>通过xftp传输至debian中进行解压；</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -xzvf podman-remote-static-linux_amd64.tar.gz</span><br></pre></td></tr></table></figure>
+
+<!--解压的文件可能不是直接可执行的文件，需移动到正确的位置并重命名-->
+</li>
+<li><p>赋予执行权力</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo chmod +x 文件路径/podman</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>容易出现环境变量问题</p>
+<p>确认文件是否在目标目录，存在但无法访问，即需添加环境变量</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export PATH=$PATH:目录</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>运行时podman易出现驱动问题：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo -n -k podman version --format &#123;&#123;.Version&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>将当前用户添加至配置文件，即允许无密码使用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo visudo</span><br><span class="line">&lt;你的用户名&gt; ALL=(ALL) NOPASSWD:/usr/bin/podman</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>gcr.io 容器注册表连接失败</p>
+<!--替换镜像源-->
+</li>
+<li><p>运行时容易提示无权限：</p>
+<p>启用Podman的rootless模式</p>
+</li>
+<li><p>podman更新后配置易出现问题，如没有正确启动或没有配置好</p>
+<ul>
+<li><p>首先初始化Podman</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">podman machine init</span><br><span class="line">podman machine start</span><br><span class="line">//检查是否正常启动</span><br><span class="line">podman info</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/11/17/%E5%85%B3%E4%BA%8E%E9%83%A8%E7%BD%B2%E5%B9%B3%E5%8F%B0%E6%97%B6%E7%9A%84%E9%97%AE%E9%A2%98/" data-id="cm4tybpna0002ewf59371fhxn" data-title="关于部署平台时的问题" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2024/12/02/%E6%B5%8B%E8%AF%95/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          测试
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2024/11/14/%E5%85%B3%E4%BA%8EK8s%E5%92%8CKnative/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">关于K8s和Knative</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/12/">December 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/11/">November 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/09/">September 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/08/">August 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/06/">June 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/12/02/%E6%B5%8B%E8%AF%95/">测试</a>
+          </li>
+        
+          <li>
+            <a href="/2024/11/17/%E5%85%B3%E4%BA%8E%E9%83%A8%E7%BD%B2%E5%B9%B3%E5%8F%B0%E6%97%B6%E7%9A%84%E9%97%AE%E9%A2%98/">关于部署平台时的问题</a>
+          </li>
+        
+          <li>
+            <a href="/2024/11/14/%E5%85%B3%E4%BA%8EK8s%E5%92%8CKnative/">关于K8s和Knative</a>
+          </li>
+        
+          <li>
+            <a href="/2024/11/13/%E6%97%A0%E6%9C%8D%E5%8A%A1%E7%99%BD%E7%9A%AE%E4%B9%A6-11-13/">无服务白皮书(11.13)</a>
+          </li>
+        
+          <li>
+            <a href="/2024/11/06/2024-11-6/">2024-11-6</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2024 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

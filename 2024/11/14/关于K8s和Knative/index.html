@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>关于K8s和Knative | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="关于K8s和KnativeK8s 组件架构： 控制节点（master）四个重要组件：  ApiServer  资源操作入口     Scheduler  集群资源调度，按策略将Pod调度到node  ControllerManager  维护集群状态  Etcd  相当于K8s的数据库    工作节点（node）提供环境：  Kubelet  KubeProxy  Docker     K8s控制">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于K8s和Knative">
+<meta property="og:url" content="http://example.com/2024/11/14/%E5%85%B3%E4%BA%8EK8s%E5%92%8CKnative/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="关于K8s和KnativeK8s 组件架构： 控制节点（master）四个重要组件：  ApiServer  资源操作入口     Scheduler  集群资源调度，按策略将Pod调度到node  ControllerManager  维护集群状态  Etcd  相当于K8s的数据库    工作节点（node）提供环境：  Kubelet  KubeProxy  Docker     K8s控制">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-11-14T12:57:52.000Z">
+<meta property="article:modified_time" content="2024-12-03T07:55:28.709Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-关于K8s和Knative" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/11/14/%E5%85%B3%E4%BA%8EK8s%E5%92%8CKnative/" class="article-date">
+  <time class="dt-published" datetime="2024-11-14T12:57:52.000Z" itemprop="datePublished">2024-11-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      关于K8s和Knative
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="关于K8s和Knative"><a href="#关于K8s和Knative" class="headerlink" title="关于K8s和Knative"></a>关于K8s和Knative</h2><h2 id="K8s"><a href="#K8s" class="headerlink" title="K8s"></a>K8s</h2><ul>
+<li><h4 id="组件架构："><a href="#组件架构：" class="headerlink" title="组件架构："></a>组件架构：</h4><ul>
+<li><h5 id="控制节点（master）"><a href="#控制节点（master）" class="headerlink" title="控制节点（master）"></a>控制节点（master）</h5><p>四个重要组件：</p>
+<ul>
+<li><p><strong>ApiServer</strong> </p>
+<p>资源操作入口</p>
+<!--提供各类型资源对象的增删改查等HTTP Rest接口；-->
+
+
+</li>
+<li><p><strong>Scheduler</strong> </p>
+<p>集群资源调度，按策略将Pod调度到node</p>
+</li>
+<li><p><strong>ControllerManager</strong> </p>
+<p>维护集群状态</p>
+</li>
+<li><p><strong>Etcd</strong> </p>
+<p>相当于K8s的数据库</p>
+</li>
+</ul>
+</li>
+<li><h5 id="工作节点（node）"><a href="#工作节点（node）" class="headerlink" title="工作节点（node）"></a>工作节点（node）</h5><p>提供环境：</p>
+<ul>
+<li><strong>Kubelet</strong> </li>
+<li><strong>KubeProxy</strong> </li>
+<li><strong>Docker</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><h4 id="K8s控制器"><a href="#K8s控制器" class="headerlink" title="K8s控制器"></a>K8s控制器</h4><h4 id=""><a href="#" class="headerlink" title=""></a><!--Replicaset和Deployment--></h4><ul>
+<li><h4 id="Replicaset"><a href="#Replicaset" class="headerlink" title="Replicaset"></a><strong>Replicaset</strong></h4><p>副本控制器（rs），控制由其管理的pod，使pod副本的数量始终维持在预设的个数；</p>
+<ul>
+<li><p>组成部分：</p>
+<ul>
+<li><p><strong>用户期望的pod副本数</strong></p>
+</li>
+<li><h5 id="标签选择器"><a href="#标签选择器" class="headerlink" title="标签选择器"></a><strong>标签选择器</strong></h5><!--选定pod由自己管理-->
+
+</li>
+<li><h5 id="pod资源模板"><a href="#pod资源模板" class="headerlink" title="pod资源模板"></a><strong>pod资源模板</strong></h5><!--新建pod的模板--></li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#编写一个ReplicaSet资源清单</span></span><br><span class="line">[<span class="string">root@k8s-master1</span> <span class="string">~</span>]<span class="comment"># cat replicaset.yaml </span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">ReplicaSet</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">frontend</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">guestbook</span></span><br><span class="line">    <span class="attr">tier:</span> <span class="string">frontend</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">3</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">tier:</span> <span class="string">frontend</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">tier:</span> <span class="string">frontend</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">php-redis</span></span><br><span class="line">        <span class="attr">image:</span> <span class="string">yecc/gcr.io-google_samples-gb-frontend:v3</span></span><br><span class="line">        <span class="attr">imagePullPolicy:</span>  <span class="string">IfNotPresent</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>​      </p>
+<pre><code>- **Deployment**
+</code></pre>
+<hr>
+<h3 id="Kubectl"><a href="#Kubectl" class="headerlink" title="Kubectl"></a>Kubectl</h3><p>自带客户端，可用来直接操作K8s集群</p>
+<ul>
+<li><p>K8s命令行工具，可以对其集群运行命令，部署应用，监测管理集群资源和查看日志；</p>
+<!--提到集群的控制面：容器编排层，暴露了API和接口来定义，部署容器和管理容器的生命周期-->
+
+<!--原理：输入的转化为REST API调用，将返回结果输出-->
+
+<ul>
+<li><h5 id="容器编排层"><a href="#容器编排层" class="headerlink" title="容器编排层"></a>容器编排层</h5><ol>
+<li>保证在多个主机上配置和管理容器，保障容器的运行；</li>
+<li>自动分配保证负载的平衡；</li>
+<li>根据需求自动增减容器的数量（弹性收缩）；</li>
+<li>监控容器的健康状态，对出现问题的容器自动重启；</li>
+<li>提供容器间的通信机制；</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><h5 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h5><p>使用以下语法从终端窗口运行 <code>kubectl</code> 命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl [command] [TYPE] [NAME] [flags]</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><code>command</code>：指具体操作（create,get等）</p>
+</li>
+<li><p>对类型相同的资源分组</p>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="一些区分"><a href="#一些区分" class="headerlink" title="一些区分"></a>一些区分</h3><ul>
+<li><h4 id="Kubectl-1"><a href="#Kubectl-1" class="headerlink" title="Kubectl"></a>Kubectl</h4><ul>
+<li><p>K8s<strong>命令行工具</strong>；</p>
+</li>
+<li><p>操作K8s集群的工具，允许用户发送请求给K8s API Server管理集群中的资源；</p>
+<!--K8s操作的基础工具--></li>
+</ul>
+</li>
+<li><h4 id="Minikube"><a href="#Minikube" class="headerlink" title="Minikube"></a>Minikube</h4><ul>
+<li><p><strong>本地集群工具</strong>，适于开发和测试；</p>
+</li>
+<li><p>提供轻量级本地集群，简单的环境来运行容器化的应用；</p>
+<!--在本地机器启动一个单节点的集群，可用于部署平台,支持虚拟化环境-->
+
+<!--提供本地开发环境--></li>
+</ul>
+</li>
+<li><h4 id="Kubelet"><a href="#Kubelet" class="headerlink" title="Kubelet"></a>Kubelet</h4><ul>
+<li><p>核心组件，节点上的代理程序；</p>
+</li>
+<li><p>集群中每个节点的守护进程，直接和容器运行时交互；</p>
+<!--负责节点管理--></li>
+</ul>
+</li>
+<li><h4 id="Knative"><a href="#Knative" class="headerlink" title="Knative"></a>Knative</h4><ul>
+<li>无服务平台</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/11/14/%E5%85%B3%E4%BA%8EK8s%E5%92%8CKnative/" data-id="cm4tybpnb0003ewf536q7aoi5" data-title="关于K8s和Knative" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2024/11/17/%E5%85%B3%E4%BA%8E%E9%83%A8%E7%BD%B2%E5%B9%B3%E5%8F%B0%E6%97%B6%E7%9A%84%E9%97%AE%E9%A2%98/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          关于部署平台时的问题
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2024/11/13/%E6%97%A0%E6%9C%8D%E5%8A%A1%E7%99%BD%E7%9A%AE%E4%B9%A6-11-13/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">无服务白皮书(11.13)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/12/">December 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/11/">November 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/09/">September 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/08/">August 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/06/">June 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/12/02/%E6%B5%8B%E8%AF%95/">测试</a>
+          </li>
+        
+          <li>
+            <a href="/2024/11/17/%E5%85%B3%E4%BA%8E%E9%83%A8%E7%BD%B2%E5%B9%B3%E5%8F%B0%E6%97%B6%E7%9A%84%E9%97%AE%E9%A2%98/">关于部署平台时的问题</a>
+          </li>
+        
+          <li>
+            <a href="/2024/11/14/%E5%85%B3%E4%BA%8EK8s%E5%92%8CKnative/">关于K8s和Knative</a>
+          </li>
+        
+          <li>
+            <a href="/2024/11/13/%E6%97%A0%E6%9C%8D%E5%8A%A1%E7%99%BD%E7%9A%AE%E4%B9%A6-11-13/">无服务白皮书(11.13)</a>
+          </li>
+        
+          <li>
+            <a href="/2024/11/06/2024-11-6/">2024-11-6</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2024 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
