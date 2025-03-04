@@ -6,15 +6,15 @@
   
   <title>关于K8s和Knative | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="关于K8s和KnativeK8s 组件架构： 控制节点（master）四个重要组件：  ApiServer  资源操作入口     Scheduler  集群资源调度，按策略将Pod调度到node  ControllerManager  维护集群状态  Etcd  相当于K8s的数据库    工作节点（node）提供环境：  Kubelet  KubeProxy  Docker     K8s控制">
+  <meta name="description" content="关于K8s和KnativeK8s组件架构： 控制节点（master）四个重要组件：  ApiServer  资源操作入口     Scheduler  集群资源调度，按策略将Pod调度到node  ControllerManager  维护集群状态  Etcd  相当于K8s的数据库    工作节点（node）提供环境：  Kubelet  KubeProxy  Docker     Pause">
 <meta property="og:type" content="article">
 <meta property="og:title" content="关于K8s和Knative">
 <meta property="og:url" content="http://example.com/2024/11/14/%E5%85%B3%E4%BA%8EK8s%E5%92%8CKnative/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="关于K8s和KnativeK8s 组件架构： 控制节点（master）四个重要组件：  ApiServer  资源操作入口     Scheduler  集群资源调度，按策略将Pod调度到node  ControllerManager  维护集群状态  Etcd  相当于K8s的数据库    工作节点（node）提供环境：  Kubelet  KubeProxy  Docker     K8s控制">
+<meta property="og:description" content="关于K8s和KnativeK8s组件架构： 控制节点（master）四个重要组件：  ApiServer  资源操作入口     Scheduler  集群资源调度，按策略将Pod调度到node  ControllerManager  维护集群状态  Etcd  相当于K8s的数据库    工作节点（node）提供环境：  Kubelet  KubeProxy  Docker     Pause">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2024-11-14T12:57:52.000Z">
-<meta property="article:modified_time" content="2024-12-03T07:55:28.709Z">
+<meta property="article:modified_time" content="2025-03-03T13:05:54.284Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
   
@@ -93,8 +93,7 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h2 id="关于K8s和Knative"><a href="#关于K8s和Knative" class="headerlink" title="关于K8s和Knative"></a>关于K8s和Knative</h2><h2 id="K8s"><a href="#K8s" class="headerlink" title="K8s"></a>K8s</h2><ul>
-<li><h4 id="组件架构："><a href="#组件架构：" class="headerlink" title="组件架构："></a>组件架构：</h4><ul>
+        <h2 id="关于K8s和Knative"><a href="#关于K8s和Knative" class="headerlink" title="关于K8s和Knative"></a>关于K8s和Knative</h2><h2 id="K8s"><a href="#K8s" class="headerlink" title="K8s"></a>K8s</h2><h4 id="组件架构："><a href="#组件架构：" class="headerlink" title="组件架构："></a>组件架构：</h4><ul>
 <li><h5 id="控制节点（master）"><a href="#控制节点（master）" class="headerlink" title="控制节点（master）"></a>控制节点（master）</h5><p>四个重要组件：</p>
 <ul>
 <li><p><strong>ApiServer</strong> </p>
@@ -122,28 +121,215 @@
 </ul>
 </li>
 </ul>
+<hr>
+<h4 id="Pause"><a href="#Pause" class="headerlink" title="Pause"></a>Pause</h4>  <!--系统容器，特殊容器（infra）容器-->
+
+  <!--每个Pod只有一个pause容器-->
+
+<p>  每个Pod自动创建的容器，不属于用户自定义的容器；</p>
+<ul>
+<li><h5 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h5><p>使同属一个pod的所有容器可以共享一个network namespace;</p>
+<!--network namespace：网络资源隔离机制-->
+
+<!--即一个Pod包含容器A和B,使其加入第三方容器（Pause）的network namespace实现存储和网络资源共享-->
 </li>
-<li><h4 id="K8s控制器"><a href="#K8s控制器" class="headerlink" title="K8s控制器"></a>K8s控制器</h4><h4 id=""><a href="#" class="headerlink" title=""></a><!--Replicaset和Deployment--></h4><ul>
-<li><h4 id="Replicaset"><a href="#Replicaset" class="headerlink" title="Replicaset"></a><strong>Replicaset</strong></h4><p>副本控制器（rs），控制由其管理的pod，使pod副本的数量始终维持在预设的个数；</p>
+<li><h5 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h5><p>pause总是创建的第一个容器，业务依赖于pause容器；</p>
+<p>Pod的生命周期&#x3D;pause的生命周期；</p>
+</li>
+</ul>
+<h4 id="init容器"><a href="#init容器" class="headerlink" title="init容器"></a>init容器</h4>  <!--特殊用户容器，类似于pause容器-->
+
+<p>保证应用容器的运行环境；</p>
+<p>启动先于应用容器；</p>
+<hr>
+<h4 id="容器探针"><a href="#容器探针" class="headerlink" title="容器探针"></a>容器探针</h4><!--确保容器的状态的同时调节负载均衡-->
+
+<!--容器探针类型分为三种：存活/就绪/启动-->
+
+<!--容器探针探测方法-->
+
+<ul>
+<li><p>exec：命令实现</p>
+<!--部署服务到集群，用命令检查-->
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">livenessProbe:</span>	<span class="comment">#存活探针</span></span><br><span class="line">  <span class="attr">exec:</span></span><br><span class="line">    <span class="attr">command:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">sh</span>	<span class="comment">#通过执行shell命令</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">-c</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">wget</span> <span class="string">-q</span> <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span><span class="string">:8080</span>	<span class="comment">#wget命令请求该IP（即容器内指定服务是否在8080端口正常运行）</span></span><br><span class="line">      <span class="comment">#-q:不输出任何信息</span></span><br><span class="line">  <span class="attr">initialDelaySeconds:</span> <span class="number">15</span>	<span class="comment">#初始延迟时间（探针等15秒执行第一次检查）</span></span><br><span class="line">  <span class="attr">periodSeconds:</span> <span class="number">5</span>	<span class="comment">#检查频率</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>TCP Socket: TCP套接字检查实现</p>
+<!--对容器ip地址上指定端口进行TCP检查，打开或打开连接后立即关闭为健康-->
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Pod</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">nginx-pod</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">containers:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">nginx-container</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">nginx:1.7.9</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">containerPort:</span> <span class="number">80</span></span><br><span class="line">    <span class="attr">livenessProbe:</span></span><br><span class="line">      <span class="attr">tcpSocket:</span>	<span class="comment">#在80端口建立tcp连接</span></span><br><span class="line">        <span class="attr">port:</span> <span class="number">80</span></span><br><span class="line">      <span class="attr">initialDelaySeconds:</span> <span class="number">15</span></span><br><span class="line">      <span class="attr">periodSeconds:</span> <span class="number">20</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>HTTP GET：HTTP 请求实现</p>
+<!--容器ip对应端口和路径执行Http get请求（200<=相应状态码<=400）-->
+
+<p><strong>前置条件：</strong>需容器内启动了http服务并提供了用于探针的接口；</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">livenessProbe:</span></span><br><span class="line">      <span class="attr">httpGet:</span></span><br><span class="line">        <span class="attr">path:</span> <span class="string">/healthy</span>	<span class="comment">#http服务的路径</span></span><br><span class="line">        <span class="attr">port:</span> <span class="number">80</span></span><br><span class="line">      <span class="attr">initialDelaySeconds:</span> <span class="number">5</span></span><br><span class="line">      <span class="attr">periodSeconds:</span> <span class="number">10</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>gRPC：gRPC远程过程调用实现</p>
+<!--rpc：框架,实现调用远程==调用本地--></li>
+</ul>
+<hr>
+<h4 id="Pod"><a href="#Pod" class="headerlink" title="Pod"></a>Pod</h4><!--pod中的实现方式和基本架构-->
+
+<ul>
+<li><h5 id="网络通信方式"><a href="#网络通信方式" class="headerlink" title="网络通信方式"></a>网络通信方式</h5><p>Kubernetes + Flannel</p>
+<ul>
+<li><p>Pod 到外网</p>
+<p>查找路由表，转发数据包到宿主网卡，宿主网卡完成路由选择；</p>
+<p>iptables 或 lvs 执行 Masquerade；</p>
+<!--Masquerade：指IP伪装，适用于动态拨号上网的IP伪装（指的是开通宽带后有宽带账号和密码的情况下）-->
+
+<!--Masquerade从服务器的网卡上自动获取当前ip地址做NAT-->
+</li>
+<li><p><strong>veth-pair</strong></p>
+<!--[Linux 虚拟网络设备 veth-pair 详解，看这一篇就够了 - bakari - 博客园 (cnblogs.com)](https://www.cnblogs.com/bakari/p/10613710.html#:~:text=前面这篇文章介绍)-->
+
+<p>虚拟网路接口，一端连接协议栈，一端彼此相连；</p>
+<p>三个经典实验，直接相连、通过 Bridge 相连和通过 OVS 相连；</p>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4 id="Ingress规则"><a href="#Ingress规则" class="headerlink" title="Ingress规则"></a>Ingress规则</h4><!--通过该规则将server暴露到外部；管理和配置外部对集群内服务的访问；可定义路由规则-->
+
+<!--具体参考：[k8s 中的 Ingress 简介【k8s 系列之三】 - 橙子家 - 博客园 (cnblogs.com)](https://www.cnblogs.com/hnzhengfy/p/18408742/k8s_ingress)-->
+
+<h5 id="eg"><a href="#eg" class="headerlink" title="eg:"></a>eg:</h5><h5 id="一个web应用（前端和后端服务），通过Ingress将其暴露到外部"><a href="#一个web应用（前端和后端服务），通过Ingress将其暴露到外部" class="headerlink" title="一个web应用（前端和后端服务），通过Ingress将其暴露到外部"></a>一个web应用（前端和后端服务），通过Ingress将其暴露到外部</h5><!--整个流程是：1.用户通过主机/路径发送http请求；-->
+
+<!--2.Ingress根据相应路径将流量路由到相应service;-->
+
+<!--3.service选择对应的pod，将请求转发给相应容器-->
+
+<h5 id="Deployment"><a href="#Deployment" class="headerlink" title="Deployment"></a>Deployment</h5><!--定义如何部署前端和后端-->
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span>	<span class="comment">#部署资源</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">frontend</span>	<span class="comment">#前端</span></span><br><span class="line"><span class="attr">spec:</span>	<span class="comment">#规则</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">3</span>	<span class="comment">#副本数</span></span><br><span class="line">  <span class="attr">selector:</span>	<span class="comment">#选择</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">frontend</span>	<span class="comment">#选择标签为frontend的pod</span></span><br><span class="line">  <span class="attr">template:</span>	<span class="comment">#pod模板</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">frontend</span>	<span class="comment">#定于标签为app:frontend/便于匹配</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span>	<span class="comment">#容器</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">web-server</span></span><br><span class="line">        <span class="attr">image:</span> <span class="string">my-frontend-image:latest</span>	<span class="comment">#使用镜像</span></span><br><span class="line">        <span class="attr">ports:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">containerPort:</span> <span class="number">80</span>	<span class="comment">#暴露端口</span></span><br><span class="line"><span class="comment">#前端部署了三个pod，每个pod内部都运行一个web-server容器</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span>	<span class="comment">#部署资源</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">backend</span>	<span class="comment">#后端应用</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">3</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">backend</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">backend</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">api-server</span></span><br><span class="line">        <span class="attr">image:</span> <span class="string">my-backend-image:latest</span></span><br><span class="line">        <span class="attr">ports:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">containerPort:</span> <span class="number">8080</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="两个service"><a href="#两个service" class="headerlink" title="两个service"></a>两个service</h5><!--为前端和后端应用提供了集群内的访问入口/允许外部流量的访问-->
+
+<!--service在每个pod前面创建一个虚拟IP，从服务暴露的端口映射到pod的端口-->
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span>	<span class="comment">#服务资源</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">frontend-service</span>	<span class="comment">#使用ClusterIP（默认类型），只能在集群内部访问</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">frontend</span>	<span class="comment">#选择的是该标签的pod</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">protocol:</span> <span class="string">TCP</span>	<span class="comment">#协议</span></span><br><span class="line">      <span class="attr">port:</span> <span class="number">80</span>	<span class="comment">#服务暴露的端口</span></span><br><span class="line">      <span class="attr">targetPort:</span> <span class="number">80</span>	<span class="comment">#转发到容器的端口</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">backend-service</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">backend</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">protocol:</span> <span class="string">TCP</span></span><br><span class="line">      <span class="attr">port:</span> <span class="number">8080</span></span><br><span class="line">      <span class="attr">targetPort:</span> <span class="number">8080</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="Ingress配置"><a href="#Ingress配置" class="headerlink" title="Ingress配置"></a>Ingress配置</h5><!--管理外部流量/http/https协议-->
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">networking.k8s.io/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Ingress</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">my-ingress</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">rules:</span>	<span class="comment">#基于 host 和 path 来路由流量</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">host:</span> <span class="string">mydomain.com</span></span><br><span class="line">    <span class="attr">http:</span></span><br><span class="line">      <span class="attr">paths:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">path:</span> <span class="string">/frontend</span></span><br><span class="line">        <span class="attr">pathType:</span> <span class="string">Prefix</span>	<span class="comment">#根据路径中/分割的前缀进行匹配</span></span><br><span class="line">        <span class="attr">backend:</span>	<span class="comment">#定义后端service服务的详细信息</span></span><br><span class="line">          <span class="attr">service:</span></span><br><span class="line">            <span class="attr">name:</span> <span class="string">frontend-service</span></span><br><span class="line">            <span class="attr">port:</span></span><br><span class="line">              <span class="attr">number:</span> <span class="number">80</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">path:</span> <span class="string">/backend</span></span><br><span class="line">        <span class="attr">pathType:</span> <span class="string">Prefix</span></span><br><span class="line">        <span class="attr">backend:</span></span><br><span class="line">          <span class="attr">service:</span></span><br><span class="line">            <span class="attr">name:</span> <span class="string">backend-service</span></span><br><span class="line">            <span class="attr">port:</span></span><br><span class="line">              <span class="attr">number:</span> <span class="number">8080</span></span><br><span class="line">  <span class="attr">tls:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">hosts:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">mydomain.com</span></span><br><span class="line">    <span class="attr">secretName:</span> <span class="string">my-tls-secret</span>	<span class="comment">#密钥的名称</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><h5 id="路由的规则"><a href="#路由的规则" class="headerlink" title="路由的规则"></a>路由的规则</h5><ul>
+<li>请求路径以 <code>/frontend</code> 开头的会被路由到 <code>frontend-service</code> 的 80 端口；</li>
+<li>请求路径以 <code>/backend</code> 开头的会被路由到 <code>backend-service</code> 的 8080 端口；</li>
+</ul>
+</li>
+<li><h5 id="关于Ingress中支持的path类型"><a href="#关于Ingress中支持的path类型" class="headerlink" title="关于Ingress中支持的path类型"></a>关于Ingress中支持的path类型</h5><ul>
+<li><p><strong>ImplementationSpecific</strong></p>
+<p>视为单独pathtype&#x2F;Prefix&#x2F;Exact</p>
+</li>
+<li><p><strong>Exact</strong></p>
+<p>精准匹配，区分大小写</p>
+</li>
+<li><p><strong>Prefix</strong></p>
+<p>路径中&#x2F;分割的前缀进行匹配</p>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4 id="K8s控制器"><a href="#K8s控制器" class="headerlink" title="K8s控制器"></a>K8s控制器</h4><h4 id=""><a href="#" class="headerlink" title=""></a><!--Replicaset和Deployment--></h4><h5 id="无状态应用通常通过Deployment和ReplicaSet管理；"><a href="#无状态应用通常通过Deployment和ReplicaSet管理；" class="headerlink" title="无状态应用通常通过Deployment和ReplicaSet管理；"></a>无状态应用通常通过Deployment和ReplicaSet管理；</h5><h5 id="有状态应用通过StatefulSet来管理；（同时需要配置持久卷（PersistentVolume）和持久卷声明（PersistentVolumeClaim）来管理数据的持久化存储）"><a href="#有状态应用通过StatefulSet来管理；（同时需要配置持久卷（PersistentVolume）和持久卷声明（PersistentVolumeClaim）来管理数据的持久化存储）" class="headerlink" title="有状态应用通过StatefulSet来管理；（同时需要配置持久卷（PersistentVolume）和持久卷声明（PersistentVolumeClaim）来管理数据的持久化存储）"></a>有状态应用通过StatefulSet来管理；（同时需要配置持久卷（PersistentVolume）和持久卷声明（PersistentVolumeClaim）来管理数据的持久化存储）</h5><ul>
+<li><h4 id="Replicaset"><a href="#Replicaset" class="headerlink" title="Replicaset"></a><strong>Replicaset</strong></h4><!--等同ReplicationController -->
+
+<p>副本控制器（rs），控制由其管理的pod，使pod副本的数量始终维持在预设的个数；</p>
 <ul>
 <li><p>组成部分：</p>
 <ul>
 <li><p><strong>用户期望的pod副本数</strong></p>
 </li>
-<li><h5 id="标签选择器"><a href="#标签选择器" class="headerlink" title="标签选择器"></a><strong>标签选择器</strong></h5><!--选定pod由自己管理-->
+<li><h5 id="标签选择器"><a href="#标签选择器" class="headerlink" title="标签选择器"></a><strong>标签选择器</strong></h5><!--选定pod由自己管理--></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="comment">##### **pod资源模板**</span></span><br><span class="line"></span><br><span class="line">  <span class="string">&lt;!--新建pod的模板--&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="string">```yaml</span></span><br><span class="line"><span class="comment">#编写一个ReplicaSet资源清单</span></span><br><span class="line">[<span class="string">root@k8s-master1</span> <span class="string">~</span>]<span class="comment"># cat replicaset.yaml </span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">ReplicaSet</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">frontend</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">guestbook</span></span><br><span class="line">    <span class="attr">tier:</span> <span class="string">frontend</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">3</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">tier:</span> <span class="string">frontend</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">tier:</span> <span class="string">frontend</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">php-redis</span></span><br><span class="line">        <span class="attr">image:</span> <span class="string">yecc/gcr.io-google_samples-gb-frontend:v3</span></span><br><span class="line">        <span class="attr">imagePullPolicy:</span>  <span class="string">IfNotPresent</span></span><br><span class="line"><span class="string">```</span></span><br></pre></td></tr></table></figure>
 
-</li>
-<li><h5 id="pod资源模板"><a href="#pod资源模板" class="headerlink" title="pod资源模板"></a><strong>pod资源模板</strong></h5><!--新建pod的模板--></li>
-</ul>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#编写一个ReplicaSet资源清单</span></span><br><span class="line">[<span class="string">root@k8s-master1</span> <span class="string">~</span>]<span class="comment"># cat replicaset.yaml </span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">ReplicaSet</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">frontend</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">guestbook</span></span><br><span class="line">    <span class="attr">tier:</span> <span class="string">frontend</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">3</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">tier:</span> <span class="string">frontend</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">tier:</span> <span class="string">frontend</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">php-redis</span></span><br><span class="line">        <span class="attr">image:</span> <span class="string">yecc/gcr.io-google_samples-gb-frontend:v3</span></span><br><span class="line">        <span class="attr">imagePullPolicy:</span>  <span class="string">IfNotPresent</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
+
 <p>​      </p>
-<pre><code>- **Deployment**
+<pre><code>- Deployment
 </code></pre>
+<ul>
+<li><h4 id="Deployment-1"><a href="#Deployment-1" class="headerlink" title="Deployment"></a>Deployment</h4><p>提供声明式定义方法来管理一组pod；</p>
+<p>即创建deployment来部署replicaset</p>
+<!--应用场景：滚动升级和回滚应用、扩容和缩容、暂停和继续-->
+</li>
+<li><h5 id="statefulset"><a href="#statefulset" class="headerlink" title="statefulset"></a>statefulset</h5><!--等同于deployment-->
+
+<p>区别在为每个Pod维护了一个有粘性的ID；</p>
+<!--这些pod基于相同的规则创建因此不能相互替换-->
+</li>
+<li><h5 id="Daemonset"><a href="#Daemonset" class="headerlink" title="Daemonset"></a>Daemonset</h5><!--pod控制器，确保所有节点都运行一个相同的pod副本-->
+
+<p>和deployment的<strong>区别</strong>：</p>
+<p>需要pod副本总运行在全部或特定的主机上，先于其他pod启动；</p>
+</li>
+</ul>
+<hr>
+<h5 id="无状态应用"><a href="#无状态应用" class="headerlink" title="无状态应用"></a>无状态应用</h5><p>  不依赖之前的执行状态的应用程序；</p>
+<ul>
+<li><h5 id="有状态应用"><a href="#有状态应用" class="headerlink" title="有状态应用"></a>有状态应用</h5><p>需要维护和跟踪状态的应用程序；</p>
+<h5 id="Headless-Service"><a href="#Headless-Service" class="headerlink" title="Headless Service"></a>Headless Service</h5><!--无头服务-->
+
+<ul>
+<li><h5 id="配置方式"><a href="#配置方式" class="headerlink" title="配置方式"></a>配置方式</h5><p>Service配置为Headless Service；</p>
+<p>Service的<code>clusterIP</code>字段设置为<code>None</code>；</p>
+<!--不提供负载均衡直接访问pod，通过IP或DNS名称直接获得Pod列表--></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4 id="HPA弹性扩展"><a href="#HPA弹性扩展" class="headerlink" title="HPA弹性扩展"></a>HPA弹性扩展</h4><h4 id="-1"><a href="#-1" class="headerlink" title=""></a><!--自动横向扩展--></h4><p>  使用户根据pod的CPU，内存利用率或其他资源使用情况，自动扩展或缩减pod副本数；</p>
+<p>  <strong>Kubernetes Autoscaling</strong> </p>
+  <!--使用条件-->
+
+<ul>
+<li><p>安装指标服务器；</p>
+<p>使用指标服务器API定期扫描pod的指标</p>
+</li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">autoscaling/v2</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">HorizontalPodAutoscaler</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">multi-metric-hpa</span></span><br><span class="line"><span class="attr">spec:</span>	<span class="comment">#自动扩缩器行为的规约</span></span><br><span class="line">  <span class="attr">scaleTargetRef:</span>	<span class="comment">#指向要扩缩的目标资源（相关指标信息/实际更改副本数）</span></span><br><span class="line">    <span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line">    <span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">web-app</span></span><br><span class="line">  <span class="attr">minReplicas:</span> <span class="number">2</span>	<span class="comment">#负载很低时最小副本数</span></span><br><span class="line">  <span class="attr">maxReplicas:</span> <span class="number">10</span>	<span class="comment">#负载很高时最大副本数</span></span><br><span class="line">  <span class="attr">metrics:</span>	<span class="comment">#定义扩展或缩减的依据指标</span></span><br><span class="line">  <span class="comment">#Resource Metrics（指基于CPU和内存使用情况）</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">type:</span> <span class="string">Resource</span></span><br><span class="line">    <span class="attr">resource:</span></span><br><span class="line">      <span class="attr">name:</span> <span class="string">cpu</span></span><br><span class="line">      <span class="attr">target:</span>	<span class="comment">#属性（利用率）</span></span><br><span class="line">        <span class="attr">type:</span> <span class="string">Utilization</span></span><br><span class="line">        <span class="attr">averageUtilization:</span> <span class="number">70</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">type:</span> <span class="string">Resource</span></span><br><span class="line">    <span class="attr">resource:</span></span><br><span class="line">      <span class="attr">name:</span> <span class="string">memory</span>	<span class="comment">#内存资源</span></span><br><span class="line">      <span class="attr">target:</span> </span><br><span class="line">        <span class="attr">type:</span> <span class="string">Utilization</span></span><br><span class="line">        <span class="attr">averageUtilization:</span> <span class="number">70</span></span><br><span class="line">  <span class="comment">#Pod Metrics（基于自定义的pod级别指标）</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">type:</span> <span class="string">Pods</span></span><br><span class="line">    <span class="attr">pods:</span></span><br><span class="line">      <span class="attr">metric:</span>	<span class="comment">#依据指标</span></span><br><span class="line">        <span class="attr">name:</span> <span class="string">requests_per_second</span>	<span class="comment">#每个每秒请求数</span></span><br><span class="line">      <span class="attr">target:</span></span><br><span class="line">        <span class="attr">type:</span> <span class="string">AverageValue</span></span><br><span class="line">        <span class="attr">averageValue:</span> <span class="number">100</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<ul>
+<li><h4 id="HPA-Behavior"><a href="#HPA-Behavior" class="headerlink" title="HPA Behavior"></a>HPA Behavior</h4><h4 id="-2"><a href="#-2" class="headerlink" title=""></a><!--通过behavior配置控制扩缩容的行为--></h4><ul>
+<li><p><strong>扩稳定性窗口（Stabilization Window）</strong></p>
+<p>避免负载短期内上升引发的频繁扩容；</p>
+</li>
+<li><h5 id="缩容的延迟（Downscale-Delay）"><a href="#缩容的延迟（Downscale-Delay）" class="headerlink" title="缩容的延迟（Downscale Delay）"></a><strong>缩容的延迟（Downscale Delay）</strong></h5><p>缩容时最小等待时间，避免短期内负载下降时立即缩容；</p>
+</li>
+<li><p><strong>控制缩放速率</strong></p>
+<p>按数量和比例进行副本数调整并周期性检测执行；</p>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">autoscaling/v2beta2</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">HorizontalPodAutoscaler</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">app-hpa</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">scaleTargetRef:</span></span><br><span class="line">    <span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line">    <span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">app</span></span><br><span class="line">  <span class="attr">minReplicas:</span> <span class="number">2</span></span><br><span class="line">  <span class="attr">maxReplicas:</span> <span class="number">15</span></span><br><span class="line">  <span class="attr">behavior:</span></span><br><span class="line">    <span class="attr">scaleUp:</span>	<span class="comment">#扩容</span></span><br><span class="line">      <span class="attr">stabilizationWindowSeconds:</span> <span class="number">60</span>  <span class="comment"># 等待 60 秒再进行扩容（等待稳定窗口期）</span></span><br><span class="line">      <span class="attr">policies:</span>	<span class="comment">#策略</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">type:</span> <span class="string">Percent</span>	<span class="comment">#指每次扩容按百分比进行</span></span><br><span class="line">        <span class="attr">value:</span> <span class="number">100</span>  <span class="comment"># 每次扩容最多增加 100% 的副本数</span></span><br><span class="line">        <span class="attr">periodSeconds:</span> <span class="number">30</span>  <span class="comment"># 每 30 秒检查一次扩容</span></span><br><span class="line">    <span class="attr">scaleDown:</span>	<span class="comment">#缩容</span></span><br><span class="line">      <span class="attr">stabilizationWindowSeconds:</span> <span class="number">300</span>  <span class="comment"># 缩容的稳定窗口为 300 秒</span></span><br><span class="line">      <span class="attr">policies:</span>	</span><br><span class="line">      <span class="bullet">-</span> <span class="attr">type:</span> <span class="string">Percent</span>	</span><br><span class="line">        <span class="attr">value:</span> <span class="number">50</span>  <span class="comment"># 每次缩容最多减少 50% 的副本数</span></span><br><span class="line">        <span class="attr">periodSeconds:</span> <span class="number">60</span>  <span class="comment"># 每 60 秒检查一次缩容</span></span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h3 id="Pod-hook"><a href="#Pod-hook" class="headerlink" title="Pod hook"></a>Pod hook</h3><!--生命周期钩子-->
+
+<p>容器进程启动前或容器进程终止前运行；<!--包含在生命周期之中--></p>
+<!--可以同时为Pod中所有容器配置hook-->
+
+<h5 id="类型："><a href="#类型：" class="headerlink" title="类型："></a>类型：</h5><ul>
+<li><h5 id="exec"><a href="#exec" class="headerlink" title="exec"></a><strong>exec</strong></h5><!--执行shell命令-->
+</li>
+<li><h5 id="HTTP"><a href="#HTTP" class="headerlink" title="HTTP"></a>HTTP</h5><!--执行Http请求--></li>
+</ul>
 <hr>
 <h3 id="Kubectl"><a href="#Kubectl" class="headerlink" title="Kubectl"></a>Kubectl</h3><p>自带客户端，可用来直接操作K8s集群</p>
 <ul>
@@ -201,6 +387,22 @@
 </li>
 <li><h4 id="Knative"><a href="#Knative" class="headerlink" title="Knative"></a>Knative</h4><ul>
 <li>无服务平台</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4 id="一些补充的部分"><a href="#一些补充的部分" class="headerlink" title="一些补充的部分"></a>一些补充的部分</h4><ul>
+<li><h4 id="RPC，GRPC"><a href="#RPC，GRPC" class="headerlink" title="RPC，GRPC"></a>RPC，GRPC</h4><p>**RPC:**用于调用远程系统上的其他进程，好像调用本地系统一样；</p>
+</li>
+<li><h4 id="Pod生命周期中的知识点"><a href="#Pod生命周期中的知识点" class="headerlink" title="Pod生命周期中的知识点"></a>Pod生命周期中的知识点</h4><h5 id="lifecycle"><a href="#lifecycle" class="headerlink" title="lifecycle"></a>lifecycle</h5><!--被用来管理容器在运行/关闭前的动作-->
+
+<ul>
+<li><p>PostStart</p>
+<p>容器创建成功后运行前的任务；</p>
+</li>
+<li><p>PreStop</p>
+<p>被终止前的任务；</p>
+</li>
 </ul>
 </li>
 </ul>
@@ -268,7 +470,15 @@
       <ul>
         
           <li>
-            <a href="/2024/12/02/%E6%B5%8B%E8%AF%95/">测试</a>
+            <a href="/2024/12/24/%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/">性能测试</a>
+          </li>
+        
+          <li>
+            <a href="/2024/12/22/postman/">postman</a>
+          </li>
+        
+          <li>
+            <a href="/2024/12/02/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/">测试</a>
           </li>
         
           <li>
@@ -277,14 +487,6 @@
         
           <li>
             <a href="/2024/11/14/%E5%85%B3%E4%BA%8EK8s%E5%92%8CKnative/">关于K8s和Knative</a>
-          </li>
-        
-          <li>
-            <a href="/2024/11/13/%E6%97%A0%E6%9C%8D%E5%8A%A1%E7%99%BD%E7%9A%AE%E4%B9%A6-11-13/">无服务白皮书(11.13)</a>
-          </li>
-        
-          <li>
-            <a href="/2024/11/06/2024-11-6/">2024-11-6</a>
           </li>
         
       </ul>
@@ -300,7 +502,7 @@
   <div class="outer">
     <div id="footer-info" class="inner">
       
-      &copy; 2024 John Doe<br>
+      &copy; 2025 John Doe<br>
       Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>

@@ -6,16 +6,16 @@
   
   <title>测试 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="自动化测试 Selenium框架   Web应用程序测试，只能测试Web应用程序；  安装框架  下载浏览器驱动，将可执行文件放置在Python环境变量配置目录；       1driver &#x3D; webdriver.Edge(executable_path&#x3D;r&quot;D:\path\msedgedriver.exe&quot;)  打开网页1driver.get(&quot;网址&quot;)">
+  <meta name="description" content="自动化测试 等价类划分划分有效等价和无效等价     Selenium框架Web应用程序测试，只能测试Web应用程序；  安装框架  下载浏览器驱动，将可执行文件放置在Python环境变量配置目录；       1driver &#x3D; webdriver.Edge(executable_path&#x3D;r&quot;D:\path\msedgedriver.exe&quot;)   打开网页1driver.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="测试">
-<meta property="og:url" content="http://example.com/2024/12/02/%E6%B5%8B%E8%AF%95/index.html">
+<meta property="og:url" content="http://example.com/2024/12/02/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="自动化测试 Selenium框架   Web应用程序测试，只能测试Web应用程序；  安装框架  下载浏览器驱动，将可执行文件放置在Python环境变量配置目录；       1driver &#x3D; webdriver.Edge(executable_path&#x3D;r&quot;D:\path\msedgedriver.exe&quot;)  打开网页1driver.get(&quot;网址&quot;)">
+<meta property="og:description" content="自动化测试 等价类划分划分有效等价和无效等价     Selenium框架Web应用程序测试，只能测试Web应用程序；  安装框架  下载浏览器驱动，将可执行文件放置在Python环境变量配置目录；       1driver &#x3D; webdriver.Edge(executable_path&#x3D;r&quot;D:\path\msedgedriver.exe&quot;)   打开网页1driver.">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://img2020.cnblogs.com/blog/2340361/202109/2340361-20210910201929078-1181253470.gif">
 <meta property="article:published_time" content="2024-12-02T07:22:04.000Z">
-<meta property="article:modified_time" content="2024-12-18T13:50:33.998Z">
+<meta property="article:modified_time" content="2025-01-15T11:58:35.056Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://img2020.cnblogs.com/blog/2340361/202109/2340361-20210910201929078-1181253470.gif">
@@ -73,9 +73,9 @@
 </header>
 
       <div class="outer">
-        <section id="main"><article id="post-测试" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+        <section id="main"><article id="post-自动化测试" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2024/12/02/%E6%B5%8B%E8%AF%95/" class="article-date">
+    <a href="/2024/12/02/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/" class="article-date">
   <time class="dt-published" datetime="2024-12-02T07:22:04.000Z" itemprop="datePublished">2024-12-02</time>
 </a>
     
@@ -96,10 +96,12 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
         <h3 id="自动化测试"><a href="#自动化测试" class="headerlink" title="自动化测试"></a>自动化测试</h3><ul>
-<li><h4 id="Selenium框架"><a href="#Selenium框架" class="headerlink" title="Selenium框架"></a>Selenium框架</h4></li>
-</ul>
+<li><h4 id="等价类划分"><a href="#等价类划分" class="headerlink" title="等价类划分"></a>等价类划分</h4><p>划分有效等价和无效等价</p>
+<!--eg ：长度/类型；即采取控制变量法，先拆取规则-->
+
 <hr>
-<p>Web应用程序测试，只能测试Web应用程序；</p>
+</li>
+<li><h4 id="Selenium框架"><a href="#Selenium框架" class="headerlink" title="Selenium框架"></a>Selenium框架</h4><p>Web应用程序测试，只能测试Web应用程序；</p>
 <ul>
 <li><p>安装框架</p>
 </li>
@@ -111,8 +113,10 @@
 <!--驱动实例开启会话时直接将环境变量指向驱动程序路径-->
 
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">driver = webdriver.Edge(executable_path=r&quot;D:\path\msedgedriver.exe&quot;)</span><br></pre></td></tr></table></figure>
+
 </li>
 <li><h5 id="打开网页"><a href="#打开网页" class="headerlink" title="打开网页"></a>打开网页</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">driver.get(&quot;网址&quot;)</span><br></pre></td></tr></table></figure>
+
 </li>
 <li><h4 id="等待方式"><a href="#等待方式" class="headerlink" title="等待方式"></a>等待方式</h4><ul>
 <li><h5 id="sleep"><a href="#sleep" class="headerlink" title="sleep"></a>sleep</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">import time</span><br><span class="line">time.sleep(3)</span><br><span class="line">或</span><br><span class="line">from time import sleep </span><br><span class="line">sleep(3)</span><br></pre></td></tr></table></figure>
@@ -173,6 +177,8 @@
 </ul>
 <p>具体方法见：</p>
 <p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/lxbmaomao/p/10389786.html">Selenium之动作链（ActionChains） - liangxb - 博客园 (cnblogs.com)</a></p>
+</li>
+</ul>
 </li>
 </ul>
 </li>
@@ -248,12 +254,30 @@
 <li><h4 id="Robot-Framwork框架"><a href="#Robot-Framwork框架" class="headerlink" title="Robot Framwork框架"></a>Robot Framwork框架</h4></li>
 </ul>
 <hr>
-<h4 id="具体内容："><a href="#具体内容：" class="headerlink" title="具体内容："></a>具体内容：</h4><ul>
+<ul>
+<li><h4 id="具体内容："><a href="#具体内容：" class="headerlink" title="具体内容："></a>具体内容：</h4><ul>
 <li><p>接口测试</p>
 </li>
 <li><p>UI测试</p>
 </li>
 <li><p>持续集成</p>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="性能测试"><a href="#性能测试" class="headerlink" title="性能测试"></a>性能测试</h3><ul>
+<li><h4 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h4><ul>
+<li><h5 id="基准测试"><a href="#基准测试" class="headerlink" title="基准测试"></a>基准测试</h5></li>
+<li><h5 id="压力"><a href="#压力" class="headerlink" title="压力"></a>压力</h5></li>
+<li><h5 id="容量"><a href="#容量" class="headerlink" title="容量"></a>容量</h5></li>
+<li><h5 id="稳定性"><a href="#稳定性" class="headerlink" title="稳定性"></a>稳定性</h5></li>
+<li><h5 id="并发"><a href="#并发" class="headerlink" title="并发"></a>并发</h5></li>
+</ul>
+</li>
+<li><h4 id="核心指标"><a href="#核心指标" class="headerlink" title="核心指标"></a>核心指标</h4><ul>
+<li><h5 id="吞吐量"><a href="#吞吐量" class="headerlink" title="吞吐量"></a>吞吐量</h5>吞吐量&#x3D;总请求数&#x2F;测试持续时间</li>
+</ul>
 </li>
 </ul>
 <hr>
@@ -292,13 +316,174 @@
 <li><p>执行测试；</p>
 <!--verbosity=2 :指详细的输出（包括测试的名称和运行结果）--></li>
 </ul>
+<hr>
+</li>
+<li><h5 id="Python查缺补漏"><a href="#Python查缺补漏" class="headerlink" title="Python查缺补漏"></a>Python查缺补漏</h5><ul>
+<li><h5 id="输出流"><a href="#输出流" class="headerlink" title="输出流"></a>输出流</h5><p><code>sys.stdout</code>表示标准输出流</p>
+<p><code>sys.stderr</code>标准错误流</p>
+</li>
+<li><h5 id="日志处理模块（logging）"><a href="#日志处理模块（logging）" class="headerlink" title="日志处理模块（logging）"></a>日志处理模块（logging）</h5><!--参考文章：https://www.cnblogs.com/yyds/p/6901864.html -->
+
+<ul>
+<li><p>使用提供的模块级函数</p>
+<!--对日志系统相关类的封装-->
+
+<p><code>logging.basicConfig(**kwargs)</code>：对root logger 进行一次性配置</p>
+<!--eg : logging.debug(msg, *args, **kwargs) | 创建一条严重级别为DEBUG的日志记录-->
+</li>
+<li><p>使用日志系统的组件</p>
+<p><code>loggers</code>：代码直接使用的接口；</p>
+<p><code>handlers</code>：日志记录发到指定的位置；</p>
+<p><code>filters</code>：日志过滤功能；</p>
+<p><code>formatters</code>：输出格式</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>格式输出解释：</p>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">logging.basicConfig(format=&#x27;%(levelname)s:%(message)s - %(user)s&#x27;, level=logging.DEBUG)</span><br></pre></td></tr></table></figure>
+
+<!--%(levelname)s：表示日志级别名称，根据日志的级别动态填充相应值-->
+
+<hr>
+<h5 id="容错机制"><a href="#容错机制" class="headerlink" title="容错机制"></a>容错机制</h5><h5 id=""><a href="#" class="headerlink" title=""></a><!--文章参考：https://blog.csdn.net/qq_41982594/article/details/121071043 --></h5><ul>
+<li><h5 id="failfast-快速故障"><a href="#failfast-快速故障" class="headerlink" title="failfast-快速故障"></a>failfast-快速故障</h5><p>旨在停止正常操作而不是尝试可能有问题的过程；</p>
+<!--检测错误并停止-->
+
+</li>
+<li><h5 id="failsafe-故障安全"><a href="#failsafe-故障安全" class="headerlink" title="failsafe-故障安全"></a>failsafe-故障安全</h5><p>出现特定类型故障可以忽略；</p>
+<p>系统在故障前后安全状态一致</p>
+<!--不会造成损害或损害较小在可接受范围内的故障-->
+
+</li>
+<li><h5 id="faIl-silent-故障沉默"><a href="#faIl-silent-故障沉默" class="headerlink" title="faIl silent-故障沉默"></a>faIl silent-故障沉默</h5><p>调用服务失败，不在分配请求流量并隔离错误；</p>
+<!--防止请求堆积消耗线程等资源--></li>
+</ul>
+<hr>
+<ul>
+<li><h3 id="流量录制和回放"><a href="#流量录制和回放" class="headerlink" title="流量录制和回放"></a>流量录制和回放</h3><p>记录线上流量，在开发或测试环境中回放；</p>
+<!--eg.记录开源网络监测工具为GoReplay（不是代理而是在后台侦听网络接口的流量）-->
+
+<!--具体来说，指将生产环境的日志即记录的真实用户请求按一定的时间顺序和负载模式重新发至目标系统，模拟真实的流量行为-->
+
+<ul>
+<li><h5 id="回放"><a href="#回放" class="headerlink" title="回放"></a>回放</h5><!--参考文章：[浅谈“流量回放”-CSDN博客](https://blog.csdn.net/972301/article/details/142389288) -->
+
+<hr>
+<!--技术原理-->
+
+<ul>
+<li><p>数据捕获</p>
+<!--包括HTTP请求，响应头，请求体等-->
+</li>
+<li><p>数据储存</p>
+<p>储存在可重用格式中；</p>
+</li>
+<li><p>数据回放</p>
+<p>储存的请求数据重新发送至应用程序中；</p>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<ul>
+<li><h5 id="单接口压测"><a href="#单接口压测" class="headerlink" title="单接口压测"></a>单接口压测</h5><p>在开发阶段对单个接口进行性能测试；</p>
+</li>
+<li><h5 id="全链路压测"><a href="#全链路压测" class="headerlink" title="全链路压测"></a>全链路压测</h5><!--文章参考： https://www.cnblogs.com/ceshi2016/p/16807648.html -->
+
+<p>完全模拟真实用户施压场景在生产环境或类生产环境执行的压测；</p>
+<ul>
+<li>服务器，中间件，数据库等软硬件配置与线上一致；</li>
+<li>压测场景上，通过流量录制回放模拟真实场景；</li>
+<li>调用链路使用全链路调通，不做&#x2F;少做mock;</li>
+</ul>
+<!--mock：用虚拟组件代替实际的服务（返回的是预设的数据而不是真正请求的处理）-->
+
+<p>分为四个部分：</p>
+<ul>
+<li><h5 id="流量分区"><a href="#流量分区" class="headerlink" title="流量分区"></a>流量分区</h5><p>增加压测标识并在整个压测链路上保持压测标识和线上真实流量区分开；</p>
+<!--区分生产流量和压测流量-->
+</li>
+<li><h5 id="存储隔离"><a href="#存储隔离" class="headerlink" title="存储隔离"></a>存储隔离</h5><p>使用的数据库，缓存，中间件通过上游请求是否有压测标志判断是否为压测流量；</p>
+<p><strong>数据库：</strong></p>
+<ol>
+<li><p>开始前导出生产环境的数据表复制生成一份影子表；</p>
+<!--影子表：生产环境中真实数据表的副本，存在目的是使压测流量完全独立于生产流量，避免干扰-->
+</li>
+<li><p>通过上游传递的压测标志判断请求为压测流量还是生产流量；</p>
+<p>压测流量：切换至影子表；否则生产表；</p>
+</li>
+<li><p>根据表示读取数据（读数据与写数据）；</p>
+</li>
+</ol>
+<p><strong>缓存：</strong></p>
+<ol>
+<li>配置影子缓存（通过命名空间或独立的实例实现）；</li>
+<li>同上；压测流量，影子缓存；否则生产缓存；</li>
+<li>读或写操作；</li>
+</ol>
+<p><strong>中间件&#x2F;消息队列层面：</strong></p>
+<!--消息队列的生产者，消费者需要消息体或元数据传递压测标志进行识别-->
+
+<ol>
+<li><p>消息生产者生成消息是判断当前流量是否为压测流量；</p>
+<p>是则在消息属性中附件压测标志&#x2F;写入消息体中；</p>
+</li>
+<li><p>消息消费者接收消息检查压测标志决定处理路径：</p>
+<ul>
+<li><strong>生产流量：</strong>使用生产数据库或缓存；</li>
+<li><strong>压测流量：</strong>使用影子表或影子缓存；</li>
+</ul>
+</li>
+<li><p>读或写数据；</p>
+</li>
+</ol>
+</li>
+<li><h5 id="参数偏移"><a href="#参数偏移" class="headerlink" title="参数偏移"></a>参数偏移</h5><p>通过改变参数的起始值，范围或分布使请求数据与生产环境数据更加真实避免数据干扰；</p>
+<p>可模拟边界条件和不同的负载模式；</p>
+<p><strong>应用场景：</strong></p>
+<ul>
+<li>用户请求参数不同，可通过参数偏移模拟多个用户登录；</li>
+<li>避免相同参数造成资源冲突；</li>
+<li>控制偏移范围，测试系统对异常参数，极端值的处理能力；</li>
+<li>避免直接覆盖生产数据；</li>
+</ul>
+<p>eg:</p>
+<p>通常分为三种偏移方式：</p>
+<p><strong>固定</strong>：设定固定偏移值，比如1000000 ；</p>
+<p><strong>随机</strong>：在范围内随机生成偏移量；</p>
+<p><strong>分段</strong>：参数分成多段，每段生成不同的偏移量；</p>
+</li>
+<li><h5 id="场景模拟"><a href="#场景模拟" class="headerlink" title="场景模拟"></a>场景模拟</h5><!--基于线上录制回放的施压方式被广泛使用--></li>
+</ul>
+</li>
+</ul>
+<hr>
+<ul>
+<li><h5 id="透传"><a href="#透传" class="headerlink" title="透传"></a>透传</h5><ul>
+<li><p>透明传输模块；</p>
+<p>只负责将业务传输到目的节点，不负责处理传输业务；</p>
+<!--相当于数据线或串口线-->
+</li>
+<li><p>用于读取远程的串口数据；</p>
+</li>
+</ul>
+</li>
+<li><h5 id="灰度发布"><a href="#灰度发布" class="headerlink" title="灰度发布"></a>灰度发布</h5><p>两个版本的软件平滑的过度；</p>
+</li>
+<li><h5 id="RPC请求"><a href="#RPC请求" class="headerlink" title="RPC请求"></a>RPC请求</h5><p>用户调用接口+具体网络协议</p>
+<p>（远程调用协议）</p>
+</li>
+</ul>
 </li>
 </ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/12/02/%E6%B5%8B%E8%AF%95/" data-id="cm4tyjjk2000cekf53549gycm" data-title="测试" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/12/02/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/" data-id="cm7tvl3k70001p4v058u230r8" data-title="测试" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -307,6 +492,15 @@
   
     
 <nav id="article-nav">
+  
+    <a href="/2024/12/22/postman/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          postman
+        
+      </div>
+    </a>
   
   
     <a href="/2024/11/17/%E5%85%B3%E4%BA%8E%E9%83%A8%E7%BD%B2%E5%B9%B3%E5%8F%B0%E6%97%B6%E7%9A%84%E9%97%AE%E9%A2%98/" id="article-nav-older" class="article-nav-link-wrap">
@@ -349,7 +543,15 @@
       <ul>
         
           <li>
-            <a href="/2024/12/02/%E6%B5%8B%E8%AF%95/">测试</a>
+            <a href="/2024/12/24/%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/">性能测试</a>
+          </li>
+        
+          <li>
+            <a href="/2024/12/22/postman/">postman</a>
+          </li>
+        
+          <li>
+            <a href="/2024/12/02/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/">测试</a>
           </li>
         
           <li>
@@ -358,14 +560,6 @@
         
           <li>
             <a href="/2024/11/14/%E5%85%B3%E4%BA%8EK8s%E5%92%8CKnative/">关于K8s和Knative</a>
-          </li>
-        
-          <li>
-            <a href="/2024/11/13/%E6%97%A0%E6%9C%8D%E5%8A%A1%E7%99%BD%E7%9A%AE%E4%B9%A6-11-13/">无服务白皮书(11.13)</a>
-          </li>
-        
-          <li>
-            <a href="/2024/11/06/2024-11-6/">2024-11-6</a>
           </li>
         
       </ul>
@@ -381,7 +575,7 @@
   <div class="outer">
     <div id="footer-info" class="inner">
       
-      &copy; 2024 John Doe<br>
+      &copy; 2025 John Doe<br>
       Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
